@@ -1,66 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Dating App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>My Dating App</title>
     <style>
-        /* Apply a gradient background */
-        body {
-            background: linear-gradient(90deg, pink, blue);
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        
-        /* Style the welcome text */
-        h1 {
-            font-size: 3rem;
-            color: white;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        /* Style the button */
-        button {
-            background-color: white;
-            color: black;
+        /* Style the login button */
+        #login-button {
+            background-color: #0088cc;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
             border: none;
-            padding: 1rem 2rem;
-            font-size: 1.5rem;
-            border-radius: 1rem;
             cursor: pointer;
         }
-        
-        /* Style the form */
-        form {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 90%;
-            margin: 0 auto;
-        }
-        
-        /* Style the form inputs */
-        input {
-            margin-bottom: 1rem;
+
+        /* Style the profile form */
+        #profile-form {
+            margin-top: 1rem;
             padding: 1rem;
-            font-size: 1.5rem;
+            background-color: #f5f5f5;
             border-radius: 0.5rem;
             border: none;
             width: 100%;
         }
-        
+
         /* Style the form button */
-        form button {
+        #profile-form button {
             margin-top: 1rem;
         }
     </style>
@@ -84,11 +49,10 @@
     <script>
         // Initialize the Telegram Web App
         Telegram.init({
-    botToken: '6476772422:AAGxwNnHvz1yChUVcTlF_UuKrOUia6vY5U4',
-    webAppName: 'My Dating App',
-    redirectUrl: 'https://t.me/dating10bot/dating'
-});
-        
+            botToken: '6476772422:AAGxwNnHvz1yChUVcTlF_UuKrOUia6vY5U4',
+            webAppName: 'My Dating App',
+            redirectUrl: 'https://t.me/dating10bot/dating'
+        });
 
         // Handle the login button click
         document.getElementById('login-button').addEventListener('click', function() {
@@ -97,19 +61,19 @@
                 document.getElementById('profile-form').style.display = 'block';
             });
         });
-        
+
         // Handle the profile form submission
         document.getElementById('profile-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            
-            // Get the form data
-            var name = document.getElementById('name-input').value;
-            var age = document.getElementById('age-input').value;
-            var gender = document.getElementById('gender-input').value;
-            var country = document.getElementById('country-input').value;
-            var region = document.getElementById('region-input').value;
-            
-            // Send the form data to the backend server
+
+            // Get the profile data from the form
+            const name = document.getElementById('name-input').value;
+            const age = document.getElementById('age-input').value;
+            const gender = document.getElementById('gender-input').value;
+            const country = document.getElementById('country-input').value;
+            const region = document.getElementById('region-input').value;
+
+            // Save the profile data to the server
             fetch('/api/profile', {
                 method: 'POST',
                 headers: {
@@ -123,8 +87,12 @@
                     region: region
                 })
             }).then(function(response) {
-                // Redirect the user to the matching page
-                window.location.href = '/matching';
+                if (response.ok) {
+                    // Redirect to the matching page
+                    window.location.href = '/matching.html';
+                } else {
+                    console.error('Failed to save profile');
+                }
             });
         });
     </script>

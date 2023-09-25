@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dating App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* Apply a gradient background */
+        body {
+            background: linear-gradient(90deg, pink, blue);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        /* Style the welcome text */
+        h1 {
+            font-size: 3rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        /* Style the button */
+        button {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.5rem;
+            border-radius: 1rem;
+            cursor: pointer;
+        }
+        
+        /* Style the form */
+        form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        
+        /* Style the form inputs */
+        input {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            font-size: 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            width: 100%;
+        }
+        
+        /* Style the form button */
+        form button {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to my dating app</h1>
+    <button id="login-button">Login with Telegram</button>
+    <form id="profile-form" style="display: none;">
+        <h2>Create a profile</h2>
+        <input type="text" id="name-input" placeholder="Name">
+        <input type="number" id="age-input" placeholder="Age">
+        <select id="gender-input">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+        <input type="text" id="country-input" placeholder="Country">
+        <input type="text" id="region-input" placeholder="Region">
+        <button type="submit">Create profile</button>
+    </form>
+    <script src="https://unpkg.com/telegram-web-app"></script>
+    <script>
+        // Initialize the Telegram Web App
+        Telegram.init({
+    botToken: '6476772422:AAGxwNnHvz1yChUVcTlF_UuKrOUia6vY5U4',
+    webAppName: 'My Dating App',
+    redirectUrl: 'https://t.me/dating10bot/dating'
+});
+        
+        // Handle the login button click
+        document.getElementById('login-button').addEventListener('click', function() {
+            Telegram.login().then(function() {
+                // Show the profile form
+                document.getElementById('profile-form').style.display = 'block';
+            });
+        });
+        
+        // Handle the profile form submission
+        document.getElementById('profile-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get the form data
+            var name = document.getElementById('name-input').value;
+            var age = document.getElementById('age-input').value;
+            var gender = document.getElementById('gender-input').value;
+            var country = document.getElementById('country-input').value;
+            var region = document.getElementById('region-input').value;
+            
+            // Send the form data to the backend server
+            fetch('/api/profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    age: age,
+                    gender: gender,
+                    country: country,
+                    region: region
+                })
+            }).then(function(response) {
+                // Redirect the user to the matching page
+                window.location.href = '/matching';
+            });
+        });
+    </script>
+</body>
+</html>

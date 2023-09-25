@@ -1,0 +1,26 @@
+{
+  "name": "dating",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MogasaMokaka/testing.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MogasaMokaka/testing/issues"
+  },
+  "homepage": "https://github.com/MogasaMokaka/testing#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.3",
+    "request": "^2.88.2"
+  }
+}

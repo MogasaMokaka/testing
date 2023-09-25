@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const request = require('request');
 
 // Connect to the MongoDB database
 mongoose.connect('mongodb://localhost/dating-app', {
@@ -36,7 +37,7 @@ app.post('/api/profile', function(req, res) {
         country: req.body.country,
         region: req.body.region
     });
-    
+
     // Save the profile to the database
     profile.save(function(err) {
         if (err) {
@@ -48,7 +49,28 @@ app.post('/api/profile', function(req, res) {
     });
 });
 
-// Start the server
+app.post('/auth', function(req, res) {
+    const telegramId = req.body.id;
+    const accessToken = req.body.access_token;
+
+    // Verify the access token with Telegram
+    request(`https://api.telegram.org/bot${accessToken}/getMe`, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            const botInfo = JSON.parse(body);
+            if (botInfo.ok && botInfo.result.id == YOUR_BOT_ID) {
+                // Authentication successful
+                res.sendStatus(200);
+            } else {
+                // Invalid access token
+                res.sendStatus(401);
+            }
+        } else {
+            // Error verifying access token
+            res.sendStatus(500);
+        }
+    });
+});
+
 app.listen(3000, function() {
-    console.log('Server started on port 3000');
+    console.log('Server listening on port 3000');
 });
